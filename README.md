@@ -1,2 +1,1 @@
 # platformGame
-Platform game - Js
