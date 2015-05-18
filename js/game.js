@@ -14,7 +14,7 @@ function Level(plan) {
 	this.width = plan[0].length;
 	this.height = plan.length;
 	this.grid = [];
-	this.actor = [];
+	this.actors = [];
 
 	for (var y = 0; y < this.height; y++) {
 		var line = plan[y],
@@ -63,4 +63,52 @@ Vector.prototype.times = function(factor) {
 	return new Vector(this.x * factor, this.y * factor);
 };
 
+var actorChars = {
+	"@": Player,
+	"o": Coin,
+	"=": Lava,
+	"|": Lava,
+	"v": Lava
+};
+
+function Player(pos) {
+	this.pos = pos.plus(new Vector(0, -0.5));
+	this.size = new Vector(0.8, 1.5);
+	this.speed = new Vector(0, 0);
+}
+
+//set type..
+Player.prototype.type = "player";
+
+
+function Lava(pos, ch) {
+	this.pos = pos;
+	this.size = new Vector(1, 1);
+
+	if (ch == "=") {
+		this.speed = new Vector(2, 0);
+	} else if (ch == "|") {
+		this.speed = new Vector(0, 2);
+	} else if (ch == "v") {
+		this.speed = new Vector(0, 3);
+		this.repeatPos = pos;
+	}
+}
+
+//set type..
+Lava.prototype.type = "Lava";
+
+function Coin(pos) {
+	this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+	this.size = new Vector(0.6, 0.6);
+	this.wobble = Math.random() * Math.PI * 2;
+}
+
+//set type..
+Coin.prototype.type = "coin";
+
+
+var simpleLevel = new Level(levelPlan);
+
+console.log(simpleLevel.width, "by", simpleLevel.height);
 
